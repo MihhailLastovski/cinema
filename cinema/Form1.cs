@@ -14,7 +14,12 @@ namespace cinema
     {
         public Form1()
         {
-            InitializeComponent();
+            formparam formparam = new formparam();
+            BackColor = formparam._backcolorform;
+            Width = formparam.Width;
+            Height = formparam.Height;
+            this.StartPosition = FormStartPosition.CenterScreen;
+
         }
     }
 }
