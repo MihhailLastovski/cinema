@@ -15,17 +15,42 @@ namespace cinema
 {
     public class RESTAPI
     {
-        public static void rest() 
+        public static MyObject rest(int filmid) 
         {
-            WebRequest request = WebRequest.Create("https://api.kinopoisk.dev/movie?token=1989K4Y-FWG4M0T-H3G2DEJ-9F30HK2&search=326&field=id");
+            WebRequest request = WebRequest.Create($"https://api.kinopoisk.dev/movie?token=1989K4Y-FWG4M0T-H3G2DEJ-9F30HK2&search={filmid}&field=id");
             request.Method = "GET";
             request.ContentType = "application/json";
             WebResponse response = (HttpWebResponse)request.GetResponse();
             using (var reader = new StreamReader(response.GetResponseStream()))
             {
-                JObject sad = JObject.Parse(reader.ReadToEnd());
-                var sa2 = sad["poster"]["url"].ToString();
+                JObject movieinfo = JObject.Parse(reader.ReadToEnd());
+                var poster = movieinfo["poster"]["url"].ToString();
+                var name = movieinfo["name"].ToString();
+                var ratingimdb = (float)movieinfo["rating"]["imdb"];
+                var movieLength = (int)movieinfo["movieLength"];
+                var description = movieinfo["description"].ToString();
+                var zanr = movieinfo["genres"][0]["name"].ToString();
+                var year = (int)movieinfo["year"];
+                MyObject getinfo = new MyObject();
+                getinfo.Poster = poster;
+                getinfo.Name = name;
+                getinfo.Zanr = zanr;
+                getinfo.MovieLength = movieLength;
+                getinfo.Description = description;
+                getinfo.Year = year;
+                getinfo.Rating = ratingimdb;
+                return getinfo;
             }
-        } 
+        }
+        public class MyObject
+        {
+            public string Poster { get; set; }
+            public string Name { get; set; }
+            public float Rating { get; set; }
+            public int MovieLength { get; set; }
+            public string Description { get; set; }
+            public string Zanr { get; set; }
+            public int Year { get; set; }
+        }
     }
 }

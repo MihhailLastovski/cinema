@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -18,16 +19,15 @@ namespace cinema
 {
     public partial class Form1 : Form
     {
-        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
-        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
-        Button button;
+        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        Button button, button2;
         SqlCommand cmd;
         SqlDataReader reader;
         Timer timer1 = new Timer();
         PictureBox pictureBox = new PictureBox();
         public Form1()
         {
-            RESTAPI.rest();
             formparam formparam = new formparam();
             BackColor = formparam._backcolorform;
             Width = formparam.Width;
@@ -38,9 +38,27 @@ namespace cinema
                 Text = "Pilt",
 
             };
+            button2 = new Button
+            {
+                Text = "admin" 
+            };
             button.Click += Button_Click;
+            button2.Click += Button2_Click;
+            button2.Location = new Point(400, 400);
             this.Controls.Add(button);
+            this.Controls.Add(button2);
+
+
         }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2();
+            this.Hide();
+            form2.ShowDialog();
+
+        }
+
         bool playing = false;
         int counter = 0;
         List<string> namepilt;
