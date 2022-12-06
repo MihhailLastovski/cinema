@@ -18,7 +18,8 @@ namespace cinema
 {
     public partial class Form1 : Form
     {
-        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
         Button button;
         SqlCommand cmd;
         SqlDataReader reader;
@@ -26,6 +27,7 @@ namespace cinema
         PictureBox pictureBox = new PictureBox();
         public Form1()
         {
+            RESTAPI.rest();
             formparam formparam = new formparam();
             BackColor = formparam._backcolorform;
             Width = formparam.Width;
@@ -40,7 +42,7 @@ namespace cinema
             this.Controls.Add(button);
         }
         bool playing = false;
-        int counter = 1;
+        int counter = 0;
         List<string> namepilt;
         private void Button_Click(object sender, EventArgs e)
         {
@@ -51,6 +53,8 @@ namespace cinema
             cmd = new SqlCommand("SELECT poster FROM filmid", connenction);
             reader = cmd.ExecuteReader();
             pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox.Size = new Size(400, 600);
+            pictureBox.Location = new Point(260, 30);
             this.Controls.Add(pictureBox);
             namepilt = new List<string>();
             while (reader.Read()) 
@@ -73,15 +77,13 @@ namespace cinema
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            counter++;
-
-
             if (counter > namepilt.Count - 1)
             {
                 counter = 0;
             }
 
             pictureBox.Image = Image.FromFile(@"../../poster/"+namepilt[counter]);
+            counter++;
         }
     }
 }
