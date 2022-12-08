@@ -10,7 +10,7 @@ namespace cinema
 {
     class formparam
     {
-        private Color backcolorform = Color.LightSalmon;
+        private Color backcolorform = Color.FromArgb(114, 114, 114);
         private int width = 1200;
         private int height = 700;
         public Color _backcolorform{ get {  return backcolorform; } }

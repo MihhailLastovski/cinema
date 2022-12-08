@@ -9,38 +9,44 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace cinema
 {
     public class RESTAPI
     {
-        public static MyObject rest(int filmid) 
+        public static MyObject rest(int filmID) 
         {
-            WebRequest request = WebRequest.Create($"https://api.kinopoisk.dev/movie?token=1989K4Y-FWG4M0T-H3G2DEJ-9F30HK2&search={filmid}&field=id");
+            WebRequest request = WebRequest.Create($"https://api.kinopoisk.dev/movie?token=1989K4Y-FWG4M0T-H3G2DEJ-9F30HK2&search={filmID}&field=id");
             request.Method = "GET";
             request.ContentType = "application/json";
-            WebResponse response = (HttpWebResponse)request.GetResponse();
-            using (var reader = new StreamReader(response.GetResponseStream()))
+            try
             {
-                JObject movieinfo = JObject.Parse(reader.ReadToEnd());
-                var poster = movieinfo["poster"]["url"].ToString();
-                var name = movieinfo["name"].ToString();
-                var ratingimdb = (float)movieinfo["rating"]["imdb"];
-                var movieLength = (int)movieinfo["movieLength"];
-                var description = movieinfo["description"].ToString();
-                var zanr = movieinfo["genres"][0]["name"].ToString();
-                var year = (int)movieinfo["year"];
-                MyObject getinfo = new MyObject();
-                getinfo.Poster = poster;
-                getinfo.Name = name;
-                getinfo.Zanr = zanr;
-                getinfo.MovieLength = movieLength;
-                getinfo.Description = description;
-                getinfo.Year = year;
-                getinfo.Rating = ratingimdb;
-                return getinfo;
+                WebResponse response = (HttpWebResponse)request.GetResponse();
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    JObject movieinfo = JObject.Parse(reader.ReadToEnd());
+                    var poster = movieinfo["poster"]["url"].ToString();
+                    var name = movieinfo["name"].ToString();
+                    var ratingimdb = (float)movieinfo["rating"]["imdb"];
+                    var movieLength = (int)movieinfo["movieLength"];
+                    var description = movieinfo["description"].ToString();
+                    var zanr = movieinfo["genres"][0]["name"].ToString();
+                    var year = (int)movieinfo["year"];
+                    MyObject getinfo = new MyObject();
+                    getinfo.Poster = poster;
+                    getinfo.Name = name;
+                    getinfo.Zanr = zanr;
+                    getinfo.MovieLength = movieLength;
+                    getinfo.Description = description;
+                    getinfo.Year = year;
+                    getinfo.Rating = ratingimdb;
+                    return getinfo;
+                }
             }
+            catch { return null; }
+            
         }
         public class MyObject
         {
