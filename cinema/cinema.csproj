@@ -87,6 +87,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="restAPI.cs" />
+    <Compile Include="Seans.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Seans.Designer.cs">
+      <DependentUpon>Seans.cs</DependentUpon>
+    </Compile>
     <Compile Include="SendMail.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
