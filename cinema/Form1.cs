@@ -19,7 +19,7 @@ namespace cinema
 {
     public partial class Form1 : Form
     {
-        Button button, button2;
+        Button button, button2, button3;
         public Form1()
         {
             formparam formparam = new formparam();
@@ -43,12 +43,30 @@ namespace cinema
                 ForeColor = Color.White,
                 Location = new Point(450, 350)
             };
+            button3 = new Button
+            {
+                Text = "SEANS",
+                Size = new Size(200, 50),
+                Font = new Font("Arial", 16),
+                ForeColor = Color.White,
+                Location = new Point(450, 420)
+            };
             button.Click += Button_Click;
             button2.Click += Button2_Click;
+            button3.Click += Button3_Click;
             this.Controls.Add(button);
             this.Controls.Add(button2);
+            this.Controls.Add(button3);
 
 
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            Seans seans = new Seans();
+            this.Hide();
+            seans.FormClosed += Form2_FormClosed;
+            seans.ShowDialog();
         }
 
         private void Button2_Click(object sender, EventArgs e)
