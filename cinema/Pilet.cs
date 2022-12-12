@@ -19,14 +19,15 @@ namespace cinema
     public partial class Pilet : Form
     {
         TableLayoutPanel tableLayout;
-        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
-        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
         SqlCommand cmd;
         SqlDataReader reader;
         List<int> rows_list = new List<int>();
         List<int> seat = new List<int>();
         int seansid;
         string time, nimetus, nimetus_hall;
+        Label rida_seat;
         public Pilet(string description, string poster, int hallID, string time, string nimetus, int seansid)
         {
             this.seansid = seansid;
@@ -134,6 +135,7 @@ namespace cinema
                         pbox.Tag = f;
                         pbox.Name = j.ToString();
                         pbox.Click += Pbox_Click;
+                        pbox.MouseEnter += Pbox_MouseEnter;
                         tableLayout.Controls.Add(pbox, j, f);
                     }
 
@@ -173,12 +175,26 @@ namespace cinema
                 Size = new Size(300, 320),
                 BorderStyle = BorderStyle.Fixed3D
             };
+            rida_seat = new Label
+            {
+                Text = "Rida -> Koht-> ",
+                AutoSize = true,
+                Font = new Font("Arial", 16),
+                ForeColor = Color.White,
+                Location = new Point(300, 555)
+            };
             button.Click += Button_Click;
             this.Controls.Add(label2);
             this.Controls.Add(pictureBox);
             this.Controls.Add(label1);
             this.Controls.Add(button);
+            this.Controls.Add(rida_seat);
+        }
 
+        private void Pbox_MouseEnter(object sender, EventArgs e)
+        {
+            PictureBox pictureBox = (PictureBox)sender;
+            rida_seat.Text = $"Rida -> {pictureBox.Tag} Koht-> {pictureBox.Name}";
         }
 
         private void Button_Click(object sender, EventArgs e)

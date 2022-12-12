@@ -91,6 +91,12 @@
     <Compile Include="Kinokava.Designer.cs">
       <DependentUpon>Kinokava.cs</DependentUpon>
     </Compile>
+    <Compile Include="klient.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="klient.Designer.cs">
+      <DependentUpon>klient.cs</DependentUpon>
+    </Compile>
     <Compile Include="Osta.cs">
       <SubType>Form</SubType>
     </Compile>

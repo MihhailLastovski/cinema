@@ -13,20 +13,21 @@ namespace cinema
 {
     public partial class Osta : Form
     {
-        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
-        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
         SqlCommand cmd;
         List<int> row, seat;
         int seanssID;
         List<string> pilet = new List<string>();
         decimal kokkuhind = 0;
-        string nimetus_hall;
+        string nimetus_hall, time;
         public Osta(List<int> row, List<int> seat, int seanssID, string time, string nimetus, string nimetus_hall)
         {
             this.nimetus_hall = nimetus_hall;
             this.row = row;
             this.seat = seat;
             this.seanssID = seanssID;
+            this.time = time;
             formparam formparam = new formparam();
             BackColor = formparam._backcolorform;
             Width = formparam.Width;
@@ -99,12 +100,29 @@ namespace cinema
             button.Click += Button_Click;
             this.Controls.Add(button);
         }
+        int counter = 0;
+        List<NumericUpDown> numericUpDowns = new List<NumericUpDown>();
 
         private void NumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             NumericUpDown numericUpDown = (NumericUpDown)sender;
-            pilet.Add(numericUpDown.Name + " - " + numericUpDown.Value.ToString() + " - " + (numericUpDown.Value*Decimal.Parse(numericUpDown.Tag.ToString()) + "€" + "\n"));
-            kokkuhind += numericUpDown.Value * Decimal.Parse(numericUpDown.Tag.ToString());
+            numericUpDowns.Add(numericUpDown);
+            if (counter >= row.Count)
+            {
+                for (int i = 0; i < numericUpDowns.Count; i++)
+                {
+
+                    numericUpDowns[i].Enabled = false;
+                    numericUpDowns[i].ForeColor = Color.Black;
+                }
+            }
+            else 
+            {
+                pilet.Add(numericUpDown.Name + " - " + 1 + " - " + numericUpDown.Tag.ToString() + "€" + "\n");
+                kokkuhind += numericUpDown.Value * Decimal.Parse(numericUpDown.Tag.ToString());
+            }
+            counter++;
+
         }
 
         private void Button_Click(object sender, EventArgs e)
@@ -121,7 +139,7 @@ namespace cinema
                     cmd.ExecuteNonQuery();
                 }
                 connenction.Close();
-                SendMail sendMail = new SendMail(pilet, kokkuhind, nimetus_hall, seat, row);
+                SendMail sendMail = new SendMail(pilet, kokkuhind, nimetus_hall, seat, row, time);
                 MessageBox.Show("Pileteid ostetakse");
             }
             

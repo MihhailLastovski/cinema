@@ -20,7 +20,7 @@ namespace cinema
     public partial class Form1 : Form
     {
         Button button, button2, button3;
-        public Form1()
+        public Form1(string result)
         {
             formparam formparam = new formparam();
             BackColor = formparam._backcolorform;
@@ -55,7 +55,11 @@ namespace cinema
             button2.Click += Button2_Click;
             button3.Click += Button3_Click;
             this.Controls.Add(button);
-            this.Controls.Add(button2);
+            if (result == "admin")
+            {
+                this.Controls.Add(button2);
+
+            }
             this.Controls.Add(button3);
 
 

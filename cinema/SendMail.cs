@@ -12,9 +12,10 @@ namespace cinema
         List<string> piletid;
         List<int> seat, row;
         decimal kokkuhind;
-        string nimetus_hall;
-        public SendMail(List<string> piletid, decimal kokkuhind, string nimetus_hall, List<int> seat, List<int> row) 
+        string nimetus_hall, time;
+        public SendMail(List<string> piletid, decimal kokkuhind, string nimetus_hall, List<int> seat, List<int> row, string time) 
         {
+            this.time = time;
             this.row = row;
             this.seat = seat;
             this.piletid = piletid;
@@ -42,7 +43,7 @@ namespace cinema
                 text += piletid[i];
                 text += "Rida -> " + row[i] + " Koht -> "+ seat[i] + "\n";
             }
-            text += "Kokku -> " + kokkuhind.ToString() + "€" + "\nSaal -> " + nimetus_hall;
+            text += "Kokku -> " + kokkuhind.ToString() + "€" + "\nSaal -> " + nimetus_hall + " \nSeansi aeg -> " + time;
             oMail.TextBody = text;
             // Hotmail/Outlook SMTP server address
             SmtpServer oServer = new SmtpServer("smtp.office365.com");
