@@ -10,6 +10,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 using Button = System.Windows.Forms.Button;
@@ -19,14 +20,17 @@ namespace cinema
 {
     public partial class klient : Form
     {
-        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
-        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
         SqlCommand cmd;
         TextBox textBox1, textBox2;
         SqlDataReader reader;
-        string post = "";
         public klient()
         {
+            connenction.Open();
+            cmd = new SqlCommand("UPDATE klient SET active = 0 WHERE active = 1", connenction);
+            cmd.ExecuteNonQuery();
+            connenction.Close();
             formparam formparam = new formparam();
             BackColor = formparam._backcolorform;
             Width = formparam.Width;
@@ -38,7 +42,7 @@ namespace cinema
                 AutoSize = true,
                 Font = new Font("Arial", 16),
                 ForeColor = Color.White,
-                Location = new Point(300, 320),
+                Location = new Point(300, 250),
             };
             Label label2 = new Label
             {
@@ -46,7 +50,7 @@ namespace cinema
                 AutoSize = true,
                 Font = new Font("Arial", 16),
                 ForeColor = Color.White,
-                Location = new Point(600, 320),
+                Location = new Point(300, 300),
             };
             Button button = new Button
             {
@@ -66,19 +70,19 @@ namespace cinema
             };
             textBox1 = new System.Windows.Forms.TextBox
             {
-                AutoSize = true,
+                Size = new Size(250, 50),
                 Font = new Font("Arial", 16),
                 ForeColor = Color.White,
-                Location = new Point(400, 315),
+                Location = new Point(550, 250),
                 BackColor = formparam._backcolorform,
 
             };
             textBox2 = new System.Windows.Forms.TextBox
             {
-                AutoSize = true,
+                Size = new Size(250, 50),
                 Font = new Font("Arial", 16),
                 ForeColor = Color.White,
-                Location = new Point(700, 315),
+                Location = new Point(550, 300),
                 BackColor = formparam._backcolorform,
             };
             button.Click += Button_Click1;
@@ -120,7 +124,7 @@ namespace cinema
         {
             this.Show();
         }
-
+        string post = "";
         private void button2_Click(object sender, EventArgs e)
         {
             if (textBox1.Text != null && textBox2.Text != null)
@@ -139,6 +143,12 @@ namespace cinema
                 connenction.Close();
                 if (nimi != "" && post != "")
                 {
+                    connenction.Open();
+                    cmd = new SqlCommand("UPDATE klient SET active = 1 WHERE nimi = @nimi AND post = @post", connenction);
+                    cmd.Parameters.AddWithValue("@post", post);
+                    cmd.Parameters.AddWithValue("@nimi", nimi);
+                    cmd.ExecuteNonQuery();
+                    connenction.Close();
                     Form1 form1 = new Form1(nimi);
                     this.Hide();
                     form1.FormClosed += Form2_FormClosed;
@@ -146,5 +156,6 @@ namespace cinema
                 }
             }
         }
+
     }
 }

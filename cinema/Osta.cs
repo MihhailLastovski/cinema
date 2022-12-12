@@ -13,8 +13,8 @@ namespace cinema
 {
     public partial class Osta : Form
     {
-        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
-        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
         SqlCommand cmd;
         List<int> row, seat;
         int seanssID;
@@ -64,16 +64,27 @@ namespace cinema
                     Font = new Font("Arial", 16),
                     ForeColor = Color.White
                 };
-                NumericUpDown numericUpDown = new NumericUpDown 
+                Button button1 = new Button
                 {
                     Name = pilettuup[i],
                     Tag = price[i],
+                    AutoSize = true,
                     Font = new Font("Arial", 16),
                     ForeColor = Color.White,
                     BackColor = formparam._backcolorform,
-                    AutoSize = true,
                     Location = new Point(650, y),
-                    Maximum = row.Count,
+                    Text = "+"
+                };
+                Button button2 = new Button
+                {
+                    Name = pilettuup[i],
+                    Tag = price[i],
+                    AutoSize = true,
+                    Font = new Font("Arial", 16),
+                    ForeColor = Color.White,
+                    BackColor = formparam._backcolorform,
+                    Location = new Point(750, y),
+                    Text = "-"
                 };
                 Label lbl4 = new Label
                 {
@@ -83,10 +94,13 @@ namespace cinema
                     Font = new Font("Arial", 16),
                     ForeColor = Color.White
                 };
-                numericUpDown.ValueChanged += NumericUpDown_ValueChanged;
+                button1.Click += Button1_Click;
+                button2.Click += Button2_Click;
                 this.Controls.Add(lbl3);
                 this.Controls.Add(lbl4);
-                this.Controls.Add(numericUpDown);
+                this.Controls.Add(button1);
+                this.Controls.Add(button2);
+
                 y += 50;
             }
             Button button = new Button
@@ -100,34 +114,33 @@ namespace cinema
             button.Click += Button_Click;
             this.Controls.Add(button);
         }
-        int counter = 0;
-        List<NumericUpDown> numericUpDowns = new List<NumericUpDown>();
 
-        private void NumericUpDown_ValueChanged(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
-            NumericUpDown numericUpDown = (NumericUpDown)sender;
-            numericUpDowns.Add(numericUpDown);
-            if (counter >= row.Count)
+            Button button = (Button)sender;
+            if (pilet.Count != 0)
             {
-                for (int i = 0; i < numericUpDowns.Count; i++)
-                {
+                pilet.Remove(button.Name + " - " + button.Tag.ToString() + "€" + "\n");
+                kokkuhind -= Decimal.Parse(button.Tag.ToString());
+            }
+        }
 
-                    numericUpDowns[i].Enabled = false;
-                    numericUpDowns[i].ForeColor = Color.Black;
-                }
-            }
-            else 
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            if (pilet.Count != row.Count)
             {
-                pilet.Add(numericUpDown.Name + " - " + 1 + " - " + numericUpDown.Tag.ToString() + "€" + "\n");
-                kokkuhind += numericUpDown.Value * Decimal.Parse(numericUpDown.Tag.ToString());
+                pilet.Add(button.Name + " - " + button.Tag.ToString() + "€" + "\n");
+                kokkuhind += Decimal.Parse(button.Tag.ToString());
             }
-            counter++;
 
         }
 
+
+
         private void Button_Click(object sender, EventArgs e)
         {
-            if (pilet.Count != 0)
+            if (pilet.Count != 0 && pilet.Count == row.Count)
             {
                 connenction.Open();
                 for (int i = 0; i < row.Count; i++)

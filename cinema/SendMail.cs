@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -13,6 +14,8 @@ namespace cinema
         List<int> seat, row;
         decimal kokkuhind;
         string nimetus_hall, time;
+        //SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\opilane.TTHK\\source\\repos\\Lastovski_TARpv21\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
+        SqlConnection connenction = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lasto\\source\\repos\\cinema\\cinema\\DB\\cinemaDB.mdf;Integrated Security=True");
         public SendMail(List<string> piletid, decimal kokkuhind, string nimetus_hall, List<int> seat, List<int> row, string time) 
         {
             this.time = time;
@@ -25,13 +28,17 @@ namespace cinema
         }
         public void Sendmail() 
         {
+            connenction.Open();
+            SqlCommand cmd = new SqlCommand("SELECT post FROM klient WHERE active = 1", connenction);
+            string result = cmd.ExecuteScalar().ToString();
+            connenction.Close();
             SmtpMail oMail = new SmtpMail("TryIt");
 
             // Your email address
             oMail.From = "cinemaTTHK@hotmail.com";
 
             // Set recipient email address
-            oMail.To = "lastovskim@gmail.com";
+            oMail.To = result;
 
             // Set email subject
             oMail.Subject = "Piletid";
