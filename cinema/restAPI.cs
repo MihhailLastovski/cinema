@@ -18,7 +18,7 @@ namespace cinema
     {
         public static MyObject rest(int filmID) 
         {
-            WebRequest request = WebRequest.Create($"https://api.kinopoisk.dev/movie?token=1989K4Y-FWG4M0T-H3G2DEJ-9F30HK2&search={filmID}&field=id");
+            WebRequest request = WebRequest.Create($"https://api.kinopoisk.dev/movie?token=&search={filmID}&field=id");
             request.Method = "GET";
             request.ContentType = "application/json";
             try
